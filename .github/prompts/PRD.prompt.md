@@ -10,6 +10,8 @@ Il doit y avoir une interface utilisateur GUI et une fonctionnalité de surveill
 
 Il doit y avoir une section pour ajuster les valeurs minimales et maximales pour les alertes.
 
+Implémenter des tests unitaires uniquement pour chaque fonctionnalité.
+
 Créez un PRD pour ces fonctionnalités dans le dossier Features.
 
 Divisez chaque fonctionnalité dans son propre fichier dans le dossier Features. Chaque fichier doit être nommé avec le nom de la fonctionnalité et une courte description. Le fichier doit être au format markdown.
