@@ -1,0 +1,3 @@
+com\agora\monitoring\MonitoringGuiTest.class
+com\agora\monitoring\TemperatureMonitorTest.class
+com\agora\monitoring\FanMonitorTest.class

@@ -109,3 +109,21 @@ C 514 384-9350
 
 Nous commencerons avec un group SQL de 20 à 25 étudiants, GR89
 Date possible entre le 4 aout au 24 Octobre.  Début octobre sera la période privilégiée. Langage favorisé sera Java
+
+## Lancement de l'interface graphique (GUI)
+
+Un simple GUI Swing a été ajouté pour visualiser les mesures en temps réel et configurer les seuils.
+
+Pour lancer l'interface depuis le jar (Windows, bash):
+
+```bash
+# Construire le projet et les dépendances
+mvn -DskipTests package
+
+# Lancer le GUI (les dépendances sont dans target/dependency)
+java -cp "target/system-monitoring-0.1.0.jar;target/dependency/*" com.agora.monitoring.ui.GuiLauncher
+```
+
+Ou exécuter directement la classe depuis votre IDE en lançant `com.agora.monitoring.ui.GuiLauncher`.
+
+L'interface affiche un onglet "Temperatures" et un onglet "Fans". Vous pouvez définir des seuils par capteur et voir les alertes apparaître en bas.
