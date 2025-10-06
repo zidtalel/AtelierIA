@@ -1,7 +1,7 @@
 ---
 mode: agent
 ---
-Créez un fichier d'instructions pour GitHub Copilot dans le projet qui va prescrire l'utilisation du language Java pour coder.
+Créez un fichier d'instructions pour GitHub Copilot dans le projet qui va prescrire l'utilisation du language Java pour coder. Placez le fichier dans le répertoire `.github/instructions/` et nommez-le `ENV.instructions.md`. Le fichier doit indiquer que le projet est développé sous Windows 11.
 
 Le fichier doit aussi prescrire l'utilisation des outils :
 - Selenium WebDriver avec Java / Robot Framework
