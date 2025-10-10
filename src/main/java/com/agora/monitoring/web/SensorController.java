@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/sensors")
@@ -31,6 +32,6 @@ public class SensorController {
     @GetMapping("/{id}")
     public List<TemperatureReading> history(@PathVariable String id) {
         // for simplicity return current readings filtered by id
-        return reader.getTemperatureReadings().stream().filter(r -> r.getId().equals(id)).toList();
+        return reader.getTemperatureReadings().stream().filter(r -> r.getId().equals(id)).collect(Collectors.toList());
     }
 }

@@ -1,10 +1,18 @@
 ---
 mode: agent
 ---
+
+
 Fix the following issues:
-- Fan speed should not have max rpm but only min rpm
-- Fan alert should trigger if speed is below min rpm
-- Values for Temperature and Fan Speed should not be simulated Revert the simulation and wire a real reader and refresh the values in the GUI.
-- There should be a column for Status in the GUI tables to show if the sensor is OK or in Alert state.
-- If a sensor is in Alert state, the entire row should be highlighted in red.
-- Add a column to specify if the values come from simulated or real sensors
+When I run:
+  mvn -DskipTests package
+  mvn -DskipTests spring-boot:start
+  sleep 6
+  curl http://localhost:8080/
+  sleep 5
+  mvn -DskipTests spring-boot:stop
+
+Fix the exception that is trown when stopping the application:
+
+Keep going and keep trying to fix the issue until it is fixed.
+Make sure to repeat the steps above to verify the issue is fixed.

@@ -1,5 +1,6 @@
 (function(){
     var thresholds = {};
+    var stompClient = null;  // Make stompClient global within this scope
 
     function loadThresholds() {
         return fetch('/api/config/all').then(function(r){ if (r.ok) return r.json(); return {}; }).catch(function(){ return {}; }).then(function(obj){ thresholds = obj || {}; });
@@ -38,8 +39,33 @@
     }
 
     function startSocket() {
+        // Disconnect any existing connection first
+        if (stompClient && stompClient.connected) {
+            console.log('Disconnecting previous connection...');
+            stompClient.disconnect();
+        }
+
         var socket = new SockJS('/ws');
-        var stompClient = Stomp.over(socket);
+        stompClient = Stomp.over(socket);
+
+        // Configure heartbeat intervals (10s incoming, 10s outgoing)
+        stompClient.heartbeat.outgoing = 10000;
+        stompClient.heartbeat.incoming = 10000;
+
+        // Ensure disconnection on page unload - use multiple events for better compatibility
+        var disconnectHandler = function() {
+            if (stompClient && stompClient.connected) {
+                console.log('Page unloading, disconnecting WebSocket...');
+                stompClient.disconnect(function() {
+                    console.log('WebSocket disconnected');
+                });
+            }
+        };
+
+        window.addEventListener('beforeunload', disconnectHandler);
+        window.addEventListener('unload', disconnectHandler);
+        window.addEventListener('pagehide', disconnectHandler);
+
         stompClient.connect({}, function(frame) {
             console.log('connected', frame);
             stompClient.subscribe('/topic/readings', function(message) {
@@ -134,6 +160,9 @@
                     list.insertBefore(item, list.firstChild);
                 } catch(e) { console.error(e); }
             });
+        }, function(error) {
+            // Connection error handler
+            console.error('WebSocket connection error:', error);
         });
     }
 
