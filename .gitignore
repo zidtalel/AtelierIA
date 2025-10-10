@@ -1,4 +1,7 @@
-# https://github.com/github/gitignore/blob/main/Java.gitignore
+# Created by https://www.toptal.com/developers/gitignore/api/java,maven,vaadin
+# Edit at https://www.toptal.com/developers/gitignore?templates=java,maven,vaadin
+
+### Java ###
 # Compiled class file
 *.class
 
@@ -24,7 +27,7 @@
 hs_err_pid*
 replay_pid*
 
-# https://github.com/github/gitignore/blob/main/Maven.gitignore
+### Maven ###
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -34,7 +37,7 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
-# https://maven.apache.org/wrapper/#usage-without-binary-jar
+# https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 
 # Eclipse m2e generated files
@@ -42,3 +45,13 @@ buildNumber.properties
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+### Vaadin ###
+.vaadin-designer
+.designer
+
+# End of https://www.toptal.com/developers/gitignore/api/java,maven,vaadin
+
+
+## Project-specific ignores below
+config.json

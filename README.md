@@ -127,3 +127,125 @@ java -cp "target/system-monitoring-0.1.0.jar;target/dependency/*" com.agora.moni
 Ou exécuter directement la classe depuis votre IDE en lançant `com.agora.monitoring.ui.GuiLauncher`.
 
 L'interface affiche un onglet "Temperatures" et un onglet "Fans". Vous pouvez définir des seuils par capteur et voir les alertes apparaître en bas.
+
+## Démarrer et arrêter l'application Web (équivalent au lancement du GUI)
+
+Le projet contient aussi une version web (Spring Boot) qui expose une UI web (Thymeleaf) et des endpoints REST/WebSocket.
+
+1. Construire le projet
+
+```bash
+# build (Linux/Windows bash)
+mvn -DskipTests package
+```
+
+1. Lancer l'application web (recommandé pour le développement)
+
+Pendant le développement, privilégiez les goals Maven fournis par Spring Boot :
+
+```bash
+# Foreground (débogage rapide / intégration IDE)
+mvn spring-boot:run
+```
+
+```bash
+# Background géré par le plugin (start/stop)
+mvn -DskipTests spring-boot:start
+
+# Arrêt propre du processus géré par le plugin
+mvn -DskipTests spring-boot:stop
+```
+
+Si vous préférez démarrer le JAR manuellement (par exemple en test ponctuel ou pour un petit déploiement), capturez le PID et arrêtez proprement :
+
+```bash
+# démarrage en arrière-plan (bash)
+nohup java -jar target/system-monitoring-0.1.0.jar > server.log 2>&1 &
+echo $!  # imprime le PID
+
+# arrêt (préférer SIGTERM pour laisser Spring exécuter ses hooks)
+kill <PID>
+```
+
+PowerShell (Windows) :
+
+```powershell
+# $p = Start-Process -FilePath 'java' -ArgumentList '-jar','target\\system-monitoring-0.1.0.jar' -PassThru
+# $p.Id
+# Stop-Process -Id $p.Id -Force
+```
+
+Vérification rapide / debug
+
+```bash
+# vérifier que la page d'accueil répond
+curl -s http://localhost:8080/ | head -n 40
+
+# vérifier l'API REST
+curl -s http://localhost:8080/api/sensors | jq '.'
+
+# tail logs
+tail -f server.log
+```
+
+Remarques
+
+- Si vous préférez utiliser `mvn spring-boot:run` pour lancer l'application durant le développement, c'est possible :
+
+```bash
+mvn spring-boot:run
+```
+
+- Le jar produit par `mvn package` peut être exécuté tel quel. Ce dépôt utilisait auparavant le plugin `maven-shade-plugin` pour créer un artefact "shaded" ; ce n'est plus le cas. Le packaging utilise maintenant le mécanisme de repackage fourni par le plugin Spring Boot (l'artefact s'appelle `target/system-monitoring-0.1.0.jar`).
+
+Si `java -jar target/system-monitoring-0.1.0.jar` échoue (par exemple parce que votre environnement exige un classpath séparé), lancez avec le classpath `target/dependency/*` comme indiqué dans la section GUI ou ajustez le packaging selon vos besoins.
+
+- Pour le GUI Swing, utilisez toujours `com.agora.monitoring.ui.GuiLauncher` comme entrée; pour la version web l'entrée est `com.agora.monitoring.web.WebApplication` (définie comme `Main-Class` dans le jar produit si le build est configuré ainsi).
+
+### Note sur l'arrêt propre et `mvn spring-boot:stop`
+
+Le goal `mvn spring-boot:stop` ne peut arrêter un processus que si celui-ci a été démarré par le plugin Spring Boot (par ex. `mvn spring-boot:start`) et si un fichier PID est disponible pour identifier le processus à terminer. Si vous lancez l'application avec `java -jar ...` ou avec `mvn spring-boot:run` (sans que le plugin ait créé un PID), `mvn spring-boot:stop` ne trouvera pas le processus et n'arrêtera rien — vous verrez alors des avertissements Tomcat au shutdown (threads MessageBroker-*, clientInboundChannel-*, ScheduledThreadPoolExecutor, etc.).
+
+Que fait ce dépôt maintenant ?
+
+- Le `pom.xml` a été configuré pour écrire un fichier PID lorsque vous utilisez les goals du plugin Spring Boot (le fichier est `target/spring-boot.pid`). Cela permet d'utiliser `mvn spring-boot:start` / `mvn spring-boot:stop` pour gérer le processus.
+- Le code contient également une petite classe `WebSocketGracefulShutdown` qui tente d'arrêter proprement le broker WebSocket et de fermer les `ThreadPoolTaskScheduler` lors de la fermeture du contexte Spring, afin de réduire les warnings de threads non arrêtés.
+
+Commandes recommandées
+
+- Démarrer/arrêter avec le plugin (recommandé pour développement) :
+
+```bash
+# démarre et écrit target/spring-boot.pid
+mvn spring-boot:start -DskipTests
+
+# arrête en lisant target/spring-boot.pid
+mvn spring-boot:stop
+```
+
+- Si vous démarrez avec `java -jar`, capturez et utilisez le PID :
+
+```bash
+# démarrage en arrière-plan (bash)
+nohup java -jar target/system-monitoring-0.1.0.jar > server.log 2>&1 &
+echo $!  # imprime le PID
+
+# arrêt
+kill <PID>
+```
+
+- PowerShell (Windows) :
+
+```powershell
+# $p = Start-Process -FilePath 'java' -ArgumentList '-jar','target\\system-monitoring-0.1.0.jar' -PassThru
+# $p.Id
+# Stop-Process -Id $p.Id -Force
+```
+
+Diagnostic rapide si `stop` ne fonctionne pas
+
+- Vérifiez si `target/spring-boot.pid` existe et contient un PID valide.
+- Si vous avez démarré le processus manuellement, arrêtez-le par PID (bash/PowerShell).
+- Si vous voyez des warnings au shutdown concernant `MessageBroker-*` ou `clientInboundChannel-*`, cela signifie que la broker/scheduler WebSocket n'a pas été arrêté proprement — la classe `WebSocketGracefulShutdown` tente de corriger cela au shutdown, mais le plugin `stop` doit connaître le PID pour invoquer correctement la JVM.
+
+En bref : utilisez `mvn spring-boot:start` / `mvn spring-boot:stop` pour la meilleure expérience (PID géré automatiquement), ou gérez explicitement le PID lorsque vous démarrez avec `java -jar`.

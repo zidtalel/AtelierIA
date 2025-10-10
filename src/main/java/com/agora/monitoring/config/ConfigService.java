@@ -48,4 +48,11 @@ public class ConfigService {
     public synchronized Double getMaxThreshold(String sensorId) {
         return maxThresholds.get(sensorId);
     }
+
+    /**
+     * Return a copy of all configured thresholds.
+     */
+    public synchronized java.util.Map<String, Double> getAll() {
+        return new java.util.HashMap<>(maxThresholds);
+    }
 }
