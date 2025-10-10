@@ -1,4 +1,4 @@
-# Workshop IA à l’École Bois-de-Boulogne
+# Workshop IA à l’École Bois-de-Boulogne en collaboration avec CAE inc. - 2025
 
 Créer des logiciels pratiques avec des outils d'IA
 

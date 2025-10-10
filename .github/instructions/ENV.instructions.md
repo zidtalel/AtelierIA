@@ -44,4 +44,15 @@ Nous ne supporterons pas d'intégration continue (CI) pour ce projet. Ne créez 
 
 ---
 
+
+
+## SQL
 Fichier d'instructions créé pour guider l'utilisation de GitHub Copilot sur ce dépôt.
+
+
+WebDriver ecrire des script de test en java pour une application web.
+Robot Framework ecrire des script de test en java pour une application web.
+
+Postman ecrire des script de test en javascript pour une application web.
+
+Ecrire des test avec cucumber et gherkin en java.

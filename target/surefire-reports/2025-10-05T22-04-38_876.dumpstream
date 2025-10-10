@@ -1,5 +1,0 @@
-# Created at 2025-10-05T22:04:39.279
-Boot Manifest-JAR contains absolute paths in classpath 'D:\cae\Sources\Agora AI\SystemMonitoring\target\test-classes'
-Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
-'other' has different root
-

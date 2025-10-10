@@ -19,15 +19,6 @@ public class RealFanReader implements FanReader {
 
     @Override
     public List<FanReading> getFanReadings() {
-        String os = System.getProperty("os.name", "").toLowerCase();
-        if (os.contains("win")) {
-            try {
-                WmiFanReader wmi = new WmiFanReader();
-                List<FanReading> wmiVals = wmi.getFanReadings();
-                if (wmiVals != null && !wmiVals.isEmpty()) return wmiVals;
-            } catch (Throwable ignored) {}
-        }
-
         try {
             SystemInfo si = new SystemInfo();
             HardwareAbstractionLayer hal = si.getHardware();

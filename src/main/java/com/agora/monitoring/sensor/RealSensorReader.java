@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Real sensor reader using OSHI for temperatures; falls back to simulated reader
- * if OSHI cannot provide sensor data.
+ * Real sensor reader using OSHI for temperatures. If OSHI cannot provide sensor data,
+ * this reader will return an empty list when no real readings are available.
  */
 public class RealSensorReader implements SensorReader {
     private final SimulatedSensorReader fallback = new SimulatedSensorReader();
@@ -27,16 +27,6 @@ public class RealSensorReader implements SensorReader {
 
     @Override
     public List<TemperatureReading> getTemperatureReadings() {
-        // If we are on Windows, try WMI via the WmiSensorReader first to get MS-specific sensors
-        String os = System.getProperty("os.name", "").toLowerCase();
-        if (os.contains("win")) {
-            try {
-                WmiSensorReader wmi = new WmiSensorReader();
-                List<TemperatureReading> wmiVals = wmi.getTemperatureReadings();
-                if (wmiVals != null && !wmiVals.isEmpty()) return wmiVals;
-            } catch (Throwable ignored) {}
-        }
-
         try {
             SystemInfo si = new SystemInfo();
             HardwareAbstractionLayer hal = si.getHardware();
