@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "mermaidchart.vscode-mermaid-chart",
+    "chrisdias.promptboost",
+    "github.copilot",
+    "github.copilot-chat",
+    "davidanson.vscode-markdownlint",
+    "christian-kohler.path-intellisense"
+  ]
+}
