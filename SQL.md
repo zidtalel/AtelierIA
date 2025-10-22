@@ -41,3 +41,33 @@ La branche de départ pour les étudiants SQL sera `SQL/Release/0`.
 
 Il est recommandé de cloner le dépôt et de créer une nouvelle branche pour vos modifications à partir de cette branche de départ.
 > git checkout -b SQL/YourName/Release/0
+
+## Démarrer et arrêter l'application Web
+
+Le projet contient aussi une version web (Spring Boot) qui expose une UI web (Thymeleaf) et des endpoints REST/WebSocket.
+
+1. Construire le projet
+
+```powershell
+# build (Linux/Windows bash)
+mvn -DskipTests package
+```
+
+1. Lancer l'application web (recommandé pour le développement)
+
+```powershell
+# Background géré par le plugin (start/stop)
+mvn spring-boot:start
+# Arrière-plan (débogage rapide / intégration IDE)
+mvn -DskipTests spring-boot:start
+
+# Arrêt propre du processus géré par le plugin
+mvn spring-boot:stop
+# Arrêt en arrière-plan (débogage rapide / intégration IDE)
+mvn -DskipTests spring-boot:stop
+```
+
+```powershell
+# Foreground (débogage rapide / intégration IDE)
+mvn spring-boot:run
+```

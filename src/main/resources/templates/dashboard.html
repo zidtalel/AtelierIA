@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>System Monitoring - Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script src="/js/readings-client.js"></script>
+    <style>
+        .alert { background: #ffdddd; }
+        .alert-row { background: #cc0000; color: white; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 8px; }
+    </style>
+</head>
+<body>
+<h1>Dashboard</h1>
+
+<h2>Temperatures</h2>
+<table id="sensors">
+    <thead>
+    <tr><th>ID</th><th>Type</th><th>Valeur (°C)</th><th>Seuil (°C)</th><th>Statut</th><th>Source</th><th>Dernière MAJ</th></tr>
+    </thead>
+    <tbody>
+    <tr th:each="s : ${sensors}" th:id="${s.id}" th:classappend="${thresholds != null && thresholds[s.id] != null && s.valueC > thresholds[s.id]} ? ' alert-row' : ''">
+        <td th:text="${s.id}">id</td>
+        <td th:text="${s.type}">type</td>
+        <td th:text="${s.valueC}">value</td>
+        <td th:text="${thresholds != null && thresholds[s.id] != null ? thresholds[s.id] : '-'}">-</td>
+        <td th:text="${thresholds != null && thresholds[s.id] != null && s.valueC > thresholds[s.id] ? 'ALERT' : 'OK'}">OK</td>
+        <td th:text="${s.source}">source</td>
+        <td th:text="${s.timestamp}">ts</td>
+    </tr>
+    </tbody>
+</table>
+
+<div style="margin-top:8px;">
+    <label>Sensor ID:</label>
+    <input type="text" id="temp-sensor-id" />
+    <label>Max °C:</label>
+    <input type="text" id="temp-max" />
+    <button id="set-temp-threshold">Set Max</button>
+</div>
+
+<h2>Fans</h2>
+<table id="fans">
+    <thead>
+    <tr><th>ID</th><th>Name</th><th>RPM</th><th>Seuil (min RPM)</th><th>Statut</th><th>Source</th><th>Dernière MAJ</th></tr>
+    </thead>
+    <tbody>
+    <tr th:each="f : ${fans}" th:id="${f.id}" th:classappend="${thresholds != null && thresholds['fan:' + f.id + ':min'] != null && f.rpm < thresholds['fan:' + f.id + ':min']} ? ' alert-row' : ''">
+        <td th:text="${f.id}">id</td>
+        <td th:text="${f.name}">name</td>
+        <td th:text="${f.rpm}">rpm</td>
+        <td th:text="${thresholds != null && thresholds['fan:' + f.id + ':min'] != null ? thresholds['fan:' + f.id + ':min'] : '-'}">-</td>
+        <td th:text="${thresholds != null && thresholds['fan:' + f.id + ':min'] != null && f.rpm < thresholds['fan:' + f.id + ':min'] ? 'ALERT' : 'OK'}">OK</td>
+        <td th:text="${f.source}">source</td>
+        <td th:text="${f.timestamp}">ts</td>
+    </tr>
+    </tbody>
+</table>
+
+<div style="margin-top:8px;">
+    <label>Fan ID:</label>
+    <input type="text" id="fan-id" />
+    <label>Min RPM:</label>
+    <input type="text" id="fan-min" />
+    <button id="set-fan-threshold">Set Min RPM</button>
+</div>
+
+<div style="margin-top:12px;">
+    <button id="clear-alerts">Clear Alerts</button>
+</div>
+
+<h2>Alerts</h2>
+<div id="alerts">
+    <ul>
+        <li th:each="a : ${alerts}">
+            <span th:text="${a.timestamp}">2025-01-01T00:00:00Z</span>
+            &nbsp;-&nbsp;
+            <strong th:text="${a.sensorId}">sensor</strong>
+            : <span th:text="${a.value}">value</span>
+            (seuil: <span th:text="${a.threshold}">thr</span>)
+        </li>
+    </ul>
+</div>
+
+<script>
+// helper to post JSON
+function postJson(url, body) {
+    return fetch(url, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)});
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+    // temperature controls
+    var setTempBtn = document.getElementById('set-temp-threshold');
+    if (setTempBtn) {
+        setTempBtn.addEventListener('click', function(){
+            var id = document.getElementById('temp-sensor-id').value.trim();
+            var max = document.getElementById('temp-max').value.trim();
+            if (id && max) {
+                postJson('/api/config/sensors/' + encodeURIComponent(id), {max: max}).then(function(r){ if (r.ok) location.reload(); else alert('Failed to set threshold'); });
+            }
+        });
+    }
+
+    var setFanBtn = document.getElementById('set-fan-threshold');
+    if (setFanBtn) {
+        setFanBtn.addEventListener('click', function(){
+            var id = document.getElementById('fan-id').value.trim();
+            var min = document.getElementById('fan-min').value.trim();
+            if (id && min) {
+                postJson('/api/config/fans/' + encodeURIComponent(id), {min: min}).then(function(r){ if (r.ok) location.reload(); else alert('Failed to set fan threshold'); });
+            }
+        });
+    }
+
+    // clear alerts button
+    var clearBtn = document.getElementById('clear-alerts');
+    if (clearBtn) {
+        clearBtn.addEventListener('click', function(){
+            fetch('/api/alerts/clear', {method:'POST'}).then(function(){
+                var ul = document.querySelector('#alerts ul');
+                if (ul) ul.innerHTML = '';
+            });
+        });
+    }
+});
+</script>
+</body>
+</html>
