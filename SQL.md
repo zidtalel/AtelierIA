@@ -33,3 +33,11 @@ Un logiciel avec une interface Web en Java qui:
 
 PRD = Product Requirements Document (Document d'exigences produit).
 >C'est un document vivant qui décrit le « quoi » et le « pourquoi » d'une fonctionnalité ou d'un produit : objectifs, utilisateurs visés, comportements attendus, critères de succès. Public principal : chef·fe produit, design, ingénierie, QA, parties prenantes business.
+
+## Branche de départ du projet SQL
+
+La branche de départ pour les étudiants SQL sera `SQL/Release/0`.
+> git checkout SQL/Release/0
+
+Il est recommandé de cloner le dépôt et de créer une nouvelle branche pour vos modifications à partir de cette branche de départ.
+> git checkout -b SQL/YourName/Release/0
