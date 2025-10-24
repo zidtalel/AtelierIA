@@ -13,15 +13,15 @@
 - Créer des fichiers de spécification que l'IA pourra utiliser pour générer du code.
 - Tester et valider les résultats générés par l'IA.
 
-## Logiciel a Tester
+## Logiciel à Tester
 
 Un logiciel avec une interface Web en Java qui:
 
 - Surveille la température du CPU en temps réel.
 - Surveille la vitesse des ventilateurs du système.
-- Si la temperature ou vitesse de ventilateur varie a l'exterieur d'une plage definie, affiche une alerte a l'utilisateur via l'interface utilisateur et un surlignage rouge affiché.
+- Si la température ou vitesse de ventilateur varie à l'extérieur d'une plage définie, affiche une alerte à l'utilisateur via l'interface utilisateur et un surlignage rouge affiché.
 - A un GUI Web simple pour afficher les informations en rafraîchissant régulièrement (3-5 secondes).
-- le GUI permet à l'utilisateur de définir les plages de temperature et vitesse des ventilateurs.
+- Le GUI permet à l'utilisateur de définir les plages de température et vitesse des ventilateurs.
 
 ## Objectifs
 
