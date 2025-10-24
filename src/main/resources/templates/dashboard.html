@@ -99,7 +99,12 @@ document.addEventListener('DOMContentLoaded', function(){
             var id = document.getElementById('temp-sensor-id').value.trim();
             var max = document.getElementById('temp-max').value.trim();
             if (id && max) {
-                postJson('/api/config/sensors/' + encodeURIComponent(id), {max: max}).then(function(r){ if (r.ok) location.reload(); else alert('Failed to set threshold'); });
+                postJson('/api/config/sensors/' + encodeURIComponent(id), {max: max}).then(function(r){
+                    if (r.ok) location.reload();
+                    else {
+                        r.text().then(function(t){ alert(t || 'Failed to set threshold'); });
+                    }
+                }).catch(function(){ alert('Failed to set threshold'); });
             }
         });
     }
@@ -110,7 +115,10 @@ document.addEventListener('DOMContentLoaded', function(){
             var id = document.getElementById('fan-id').value.trim();
             var min = document.getElementById('fan-min').value.trim();
             if (id && min) {
-                postJson('/api/config/fans/' + encodeURIComponent(id), {min: min}).then(function(r){ if (r.ok) location.reload(); else alert('Failed to set fan threshold'); });
+                postJson('/api/config/fans/' + encodeURIComponent(id), {min: min}).then(function(r){
+                    if (r.ok) location.reload();
+                    else { r.text().then(function(t){ alert(t || 'Failed to set fan threshold'); }); }
+                }).catch(function(){ alert('Failed to set fan threshold'); });
             }
         });
     }

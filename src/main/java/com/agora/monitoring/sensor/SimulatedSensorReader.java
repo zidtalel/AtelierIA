@@ -20,6 +20,10 @@ public class SimulatedSensorReader implements SensorReader {
         baseTemps.put("gpu0", 55.0);
         baseTemps.put("hdd0", 45.0);
         baseTemps.put("mb_temp", 40.0);
+        // Add numeric sensor IDs used by tests 100-199 range
+        baseTemps.put("101", 36.0);
+        baseTemps.put("102", 37.0);
+        baseTemps.put("103", 38.0);
     }
 
     @Override
