@@ -26,6 +26,25 @@ public class SimulatedSensorReader implements SensorReader {
         baseTemps.put("103", 38.0);
     }
 
+    /**
+     * Test helper: set the base temperature for a given sensor id.
+     * This allows integration tests to inject deterministic readings.
+     */
+    public void setBaseTemp(String id, double temp) {
+        synchronized (baseTemps) {
+            baseTemps.put(id, temp);
+        }
+    }
+
+    /**
+     * Test helper: get current base temperature map copy.
+     */
+    public java.util.Map<String, Double> getBaseTemps() {
+        synchronized (baseTemps) {
+            return new java.util.HashMap<>(baseTemps);
+        }
+    }
+
     @Override
     public List<TemperatureReading> getTemperatureReadings() {
         List<TemperatureReading> list = new ArrayList<>();

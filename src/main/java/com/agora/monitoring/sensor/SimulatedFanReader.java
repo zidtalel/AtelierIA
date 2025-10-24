@@ -26,6 +26,21 @@ public class SimulatedFanReader implements FanReader {
         baseRpms.put("fan_chassis", 800);
     }
 
+    /**
+     * Test helper: set base RPM for a fan id.
+     */
+    public void setBaseRpm(String id, int rpm) {
+        synchronized (baseRpms) {
+            baseRpms.put(id, Math.max(0, rpm));
+        }
+    }
+
+    public java.util.Map<String, Integer> getBaseRpms() {
+        synchronized (baseRpms) {
+            return new java.util.HashMap<>(baseRpms);
+        }
+    }
+
     public List<FanReading> getFanReadings() {
         List<FanReading> out = new ArrayList<>();
         Instant now = Instant.now();

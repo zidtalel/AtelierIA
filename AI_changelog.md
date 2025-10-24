@@ -42,6 +42,47 @@
 
 ---
 
+## [AlertTriggering] - 2025-10-23
+
+### Fichiers modifiés dans `src/main`
+
+- `src/main/java/com/agora/monitoring/sensor/SimulatedSensorReader.java`
+
+**Test échoué** : N/A (amélioration pour tests)
+
+**Erreur / Constat** : Les tests d'intégration nécessitent la capacité d'injecter des lectures déterministes dans le simulateur pour provoquer des alertes de façon reproductible.
+
+**Justification** : Fournir des helpers de test pour régler la base des lectures facilite l'automatisation et évite la dépendance au comportement aléatoire du simulateur.
+
+**Modification** : Ajout de `setBaseTemp` et `getBaseTemps`.
+
+---
+
+- `src/main/java/com/agora/monitoring/sensor/SimulatedFanReader.java`
+
+**Modification** : Ajout de `setBaseRpm` et `getBaseRpms` pour injection de tests.
+
+---
+
+### Nouveaux endpoints (test helpers)
+
+- `src/main/java/com/agora/monitoring/web/TestInjectionController.java` - endpoints POST `/api/test/sensors/{id}` et `/api/test/fans/{id}` pour injecter valeurs simulées.
+- `src/main/java/com/agora/monitoring/web/TestControlController.java` - endpoints POST `/api/test/control/poll/temps` et `/api/test/control/poll/fans` pour déclencher un pollOnce des moniteurs.
+
+### Tests ajoutés
+
+- `src/test/java/com/agora/monitoring/ui/AlertOnTemperatureThresholdSeleniumTest.java`
+- `src/test/java/com/agora/monitoring/ui/AlertOnFanThresholdSeleniumTest.java`
+- `src/test/java/com/agora/monitoring/ui/pages/DashboardPage.java`
+
+Ces tests implémentent les cas P0 du PRD Feature 05 (AlertTriggering). Ils :
+- définissent le seuil via `/api/config`,
+- injectent une lecture via `/api/test`,
+- demandent explicitement au monitor d'exécuter `pollOnce` via `/api/test/control/poll/*`,
+- ouvrent la page `/` et vérifient le surlignage de la ligne et la présence d'une alerte dans la liste.
+
+**Résultat attendu** : Tests autonomes et reproductibles pour la feature 05.
+
 Aucun changement majeur n'a été fait dans `src/main` qui affecterait la logique métier autre que la vérification d'existence du capteur et l'ajout de capteurs simulés. Ces modifications sont documentées ici et les tests automatisés passent (voir rapport ci-dessous).
 
 ## Ajouter un seuil - Fan - 2025-10-23
