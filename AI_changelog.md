@@ -67,3 +67,32 @@ Aucun changement majeur n'a été fait dans `src/main` qui affecterait la logiqu
 - `src/test/java/com/agora/monitoring/ui/FanAddThresholdSeleniumTest.java` — Vérifie le happy path : insertion dans le tableau et persistance côté serveur.
 
 **Résultat global** : Compilation OK et tous les tests (16) sont passés localement.
+
+---
+
+## Feature 04 - Table Row Click Populate - 2025-10-23
+
+### Contexte
+Tests implémentés conformément au PRD `Features/04-TableRowClickPopulate.md`. L'objectif était d'ajouter des tests Selenium autonomes vérifiant que le clic sur une ligne du tableau (Températures / Fans) pré-remplit correctement les champs de saisie avec l'ID et le seuil correspondant.
+
+### Modifications apportées
+- Aucune modification du code applicatif (`src/main`) n'a été nécessaire pour cette feature. Toutes les modifications sont contenues dans `src/test`.
+
+#### Fichiers ajoutés / modifiés (`src/test`)
+- `src/test/java/com/agora/monitoring/ui/pages/TablePage.java`
+	- Page Object pour interagir avec les tableaux `#sensors` et `#fans`. Ajout d'un fallback JS-click pour fiabiliser les clics en mode headless.
+
+- `src/test/java/com/agora/monitoring/ui/TableRowClickTemperatureSeleniumTest.java`
+	- Test Selenium implémentant le cas TableRowClick_Temperature. Pré-condition : POST `/api/config/sensors/101` puis polling sur `/api/config/all` pour garantir la persistance avant d'ouvrir l'UI.
+
+- `src/test/java/com/agora/monitoring/ui/TableRowClickFanSeleniumTest.java`
+	- Test Selenium implémentant le cas TableRowClick_Fan. Pré-condition : POST `/api/config/fans/fan_chassis`.
+
+### Justification
+- Tests ajoutés pour couvrir le PRD Feature 04. Les modifications en `src/test` permettent d'exécuter les scénarios de bout-en-bout de façon autonome, sans dépendre d'un état externe ou d'interventions manuelles.
+
+### Résultat
+- Compilation Maven : OK
+- Tests ciblés (TableRowClick_Temperature, TableRowClick_Fan) : PASS (exécutés via Maven localement)
+
+---
