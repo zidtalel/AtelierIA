@@ -137,3 +137,29 @@ Tests implémentés conformément au PRD `Features/04-TableRowClickPopulate.md`.
 - Tests ciblés (TableRowClick_Temperature, TableRowClick_Fan) : PASS (exécutés via Maven localement)
 
 ---
+
+## Feature 06 - ClearAlerts - 2025-10-23
+
+### Fichiers modifiés
+
+- `src/test/java/com/agora/monitoring/ui/pages/DashboardPage.java` (REMPLACÉ)
+- `src/test/java/com/agora/monitoring/ui/ClearAlertsSeleniumTest.java` (AJOUTÉ)
+
+**Test exécuté** : `ClearAlertsSeleniumTest.ClearAlerts_RemovesAll()`
+
+**Erreur initiale** :
+- `src/test/java/com/agora/monitoring/ui/pages/DashboardPage.java` contenait des définitions dupliquées et incomplètes, provoquant des erreurs de compilation `class, interface, or enum expected` lors de la phase `test-compile`.
+
+**Justification** :
+- Le fichier corrompu se trouvait dans `src/test` et empêchait la compilation des tests Selenium. Il a été remplacé par une implémentation propre du Page Object utilisée par plusieurs tests.
+
+**Modification** :
+- Remplacement complet de `DashboardPage.java` par une classe publique unique et robuste qui expose les helpers nécessaires (navigation, click Clear Alerts, méthodes utilitaires pour les autres tests existants). Création du test `ClearAlertsSeleniumTest.java` implémentant le scénario PRD : pré-condition côté serveur, navigation, click UI et assertions côté UI et serveur.
+
+**Impact** :
+- Aucune modification du code de production (`src/main`) n'a été effectuée.
+- Les tests ciblés compilent et s'exécutent correctement.
+
+**Résultat** :
+- Test exécuté : PASS
+- Build : BUILD SUCCESS
