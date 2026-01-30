@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: agent
 ---
 
 # Instructions d'Environnement à remplir

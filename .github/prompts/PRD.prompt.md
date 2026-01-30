@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: agent
 ---
 # Instructions pour le PRD du Plan de Test
 

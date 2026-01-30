@@ -53,7 +53,7 @@ Le projet contient aussi une version web (Spring Boot) qui expose une UI web (Th
 mvn -DskipTests package
 ```
 
-1. Lancer l'application web (recommandé pour le développement)
+2. Lancer l'application web (recommandé pour le développement)
 
 ```powershell
 # Background géré par le plugin (start/stop)
@@ -71,3 +71,16 @@ mvn -DskipTests spring-boot:stop
 # Foreground (débogage rapide / intégration IDE)
 mvn spring-boot:run
 ```
+
+3. Lancer les tests
+
+```powershell
+# lancer tous les tests
+mvn test
+# lancer tous les tests (avec exécution des tests d'intégration)
+$ mvn -DskipTests=false test
+```
+
+3. Accéder à l'interface utilisateur web
+   
+Ouvrir un navigateur web et aller à l'adresse : `http://localhost:18080/`
