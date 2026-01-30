@@ -12,7 +12,15 @@ Les exigences pour chaque fonctionnalité spécifiée dans le PRD doivent être 
 
 ## Instructions spécifiques
 
-[Ajouter instruction spécifique ici]
+Valider que le code compile.
+
+Vérifier que les outils définis sont présents et configurés correctement.
+
+S'assurer que l'application est démarrée et accessible pour les tests UI/Intégration.
+
+Utiliser les outils de manière automatisée sans nécessiter d'action utilisateur.
+
+Corriger les bugs détectés par les tests échoués en modifiant le code dans `src/main` si nécessaire.
 
 ## Structure des répertoires de test
 
