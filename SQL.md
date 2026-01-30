@@ -80,3 +80,7 @@ mvn test
 # lancer tous les tests (avec exécution des tests d'intégration)
 $ mvn -DskipTests=false test
 ```
+
+3. Accéder à l'interface utilisateur web
+   
+Ouvrir un navigateur web et aller à l'adresse : `http://localhost:18080/`

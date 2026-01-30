@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: agent
 ---
 
 # Instructions pour le Codage du Plan de Test
