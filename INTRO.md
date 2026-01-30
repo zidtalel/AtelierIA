@@ -449,6 +449,7 @@ Note : estimations (oct. 2025) — les valeurs réelles dépendent de l'endpoint
 
 Astuce pratique : si vous avez besoin d'analyser de longs dépôts, privilégiez les modèles à grande fenêtre ou prétraitez / résumez le code pour n'envoyer que les parties essentielles (signatures, tests, exemples).
 
+> 💡 **Github Copilot** : Chaque modèle a une fenêtre de contexte de 128k !
 ---
 
 ## 📋 Résumé en 5 minutes
