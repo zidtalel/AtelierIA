@@ -63,41 +63,7 @@ Imaginez que vous jouez à deviner le prochain mot d'une phrase. Si quelqu'un di
 
 <table style="border: none; width: 100%;">
 <tr style="border: none;">
-<td style="border: none; vertical-align: top; width: 55%;">
-
-**Voici comment le modèle génère du code, étape par étape :**
-
-1. **Tokenisation** : Découpe votre texte en petits morceaux (tokens)
-   - *Exemple* : `"fonction calculer"` → `["fonction", " ", "calcul", "er"]`
-
-2. **Embeddings** : Convertit chaque token en nombres que l'ordinateur peut traiter
-   - *Analogie* : Comme traduire des mots en coordonnées GPS pour les manipuler
-
-3. **Positions** : Ajoute l'information de l'ordre des mots
-   - *Pourquoi* : Le modèle doit savoir que "Java aime Pierre" ≠ "Pierre aime Java"
-
-4. **Couches Transformer** : Le cœur du modèle qui analyse le contexte
-   - **Attention** : Le token "regarde en arrière" pour comprendre le contexte
-     - *Example* : Pour compléter `data.get___`, il regarde que `data` est une Map → propose `(key)`
-   - **Réseau** : Calcule et transforme l'information pour extraire des patterns
-     - *Analogie* : Comme un calculateur qui combine les indices trouvés
-
-5. **Scores** : Calcule un score pour chaque mot possible du vocabulaire entier
-   - *Example* : `public` (score: 0.8), `private` (score: 0.6), `banana` (score: 0.001)
-
-6. **Probabilités** : Transforme les scores en pourcentages (0-100%)
-   - *Example* : `public` (45%), `private` (35%), autres (20%)
-
-7. **Décodage** : Choisit le prochain token selon une stratégie
-   - **Greedy** : Toujours le plus probable
-   - **Top-k** : Parmi les k meilleurs
-   - **Nucleus** : Parmi ceux qui totalisent x% de probabilité
-
-8. **Boucle** : Ajoute ce token au contexte et recommence jusqu'à la fin
-   - Le nouveau token devient partie du contexte pour prédire le suivant
-
-</td>
-<td style="border: none; vertical-align: top; width: 45%;">
+<td style="border: none; vertical-align: top; width: 60%;">
 
 **Diagramme du cycle :**
 
@@ -135,6 +101,40 @@ flowchart TD
   class F focus
   class J final
 ```
+
+</td>
+<td style="border: none; vertical-align: top; width: 40%;">
+
+**Voici comment le modèle génère du code, étape par étape :**
+
+1. **Tokenisation** : Découpe votre texte en petits morceaux (tokens)
+   - *Exemple* : `"fonction calculer"` → `["fonction", " ", "calcul", "er"]`
+
+2. **Embeddings** : Convertit chaque token en nombres que l'ordinateur peut traiter
+   - *Analogie* : Comme traduire des mots en coordonnées GPS pour les manipuler
+
+3. **Positions** : Ajoute l'information de l'ordre des mots
+   - *Pourquoi* : Le modèle doit savoir que "Java aime Pierre" ≠ "Pierre aime Java"
+
+4. **Couches Transformer** : Le cœur du modèle qui analyse le contexte
+   - **Attention** : Le token "regarde en arrière" pour comprendre le contexte
+     - *Example* : Pour compléter `data.get___`, il regarde que `data` est une Map → propose `(key)`
+   - **Réseau** : Calcule et transforme l'information pour extraire des patterns
+     - *Analogie* : Comme un calculateur qui combine les indices trouvés
+
+5. **Scores** : Calcule un score pour chaque mot possible du vocabulaire entier
+   - *Example* : `public` (score: 0.8), `private` (score: 0.6), `banana` (score: 0.001)
+
+6. **Probabilités** : Transforme les scores en pourcentages (0-100%)
+   - *Example* : `public` (45%), `private` (35%), autres (20%)
+
+7. **Décodage** : Choisit le prochain token selon une stratégie
+   - **Greedy** : Toujours le plus probable
+   - **Top-k** : Parmi les k meilleurs
+   - **Nucleus** : Parmi ceux qui totalisent x% de probabilité
+
+8. **Boucle** : Ajoute ce token au contexte et recommence jusqu'à la fin
+   - Le nouveau token devient partie du contexte pour prédire le suivant
 
 </td>
 </tr>
